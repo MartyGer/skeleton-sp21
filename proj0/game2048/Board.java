@@ -114,6 +114,7 @@ public class Board implements Iterable<Tile> {
                     out.format("|    ");
                 } else {
                     out.format("|%4d", tile(col, row).value());
+
                 }
             }
             out.format("|%n");

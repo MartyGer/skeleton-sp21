@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author Marty Germane
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -16,6 +16,8 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
+
+    private  int blocked = -1;
 
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
@@ -42,6 +44,7 @@ public class Model extends Observable {
         this.score = score;
         this.maxScore = maxScore;
         this.gameOver = gameOver;
+
     }
 
     /** Return the current Tile at (COL, ROW), where 0 <= ROW < size(),
@@ -110,15 +113,159 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
+
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        /*if (side.equals(Side.NORTH))
+        {
+            System.out.println("I am North");
+        }
+
+        else if (side.equals(Side.SOUTH))
+        {
+
+        }
+
+        else if (side.equals(Side.EAST))
+        {
+
+        }
+
+        else if (side.equals(Side.WEST))
+        {
+
+        }*/
+
+        board.setViewingPerspective(side);
+        for (int i = board.size() - 1; i >= 0; i--)
+        {
+            this.blocked = -1;
+            for (int j = board.size() - 2; j >= 0; j--)
+            {
+                Tile t = board.tile(i, j);
+                if (t == null)
+                    continue;
+                if (board.tile(i, j) != null)
+                {
+                    int newRow = similarValueCheck(i, j, board, this.blocked);
+                   /* System.out.println("newRow: " + newRow);*/
+
+                    if (newRow != -1)
+                    {
+
+                        t = board.tile(i, j);
+
+                        boolean mergeOrNot = board.move(i, newRow, t);
+                       /* System.out.println(i + "Row" + newRow + "old Row: " + j);*/
+                        changed = true;
+                        if (mergeOrNot)
+                        {
+                            int scoreKeeperNew = board.tile(i, newRow).value();
+                            score += scoreKeeperNew;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        // For Empty space
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board.size(); j++)
+            {
+
+                Tile t = board.tile(i, j);
+            /*    System.out.println(t + "i: " + i + "j: " + j);*/
+
+                if (t != null)
+                {
+                   /* System.out.println("Empty Space: " + i + " " + j);*/
+                    int newRow = nullFill(i, j, board);
+                    if (newRow == -1)
+                    {
+                        continue;
+                    }
+
+                    boolean mergeOrNot = board.move(i, newRow, t);
+                    /*System.out.println(i + " Row (nullFill)" + newRow + "old Row: " + j);
+                    System.out.println(t);*/
+                    changed = true;
+                    if (mergeOrNot)
+                    {
+                        int scoreKeeperNew = board.tile(i, newRow).value();
+                        score += scoreKeeperNew;
+                    }
+                }
+
+            }
+        }
+
+        /*// For Basic Merge
+
+
+        boolean mergeOrNot = board.move(i, board.size() - 1, t);
+        changed = true;
+        if (mergeOrNot) {
+            int scoreKeeperNew = board.tile(i, board.size() - 1).value();
+            score += scoreKeeperNew;
+        }*/
+
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+
+
+
+    // This is to check only the "Up" direction values.
+    // Returns the value of row iff there is a similar value in the column
+    // Else returns -1
+    public int similarValueCheck(int col, int row, Board b, int blockedRow)
+    {
+        // Remember column would remain same.
+        for (int i = row + 1; i < b.size(); i++)
+        {
+
+            if (b.tile(col, row) == null || i == blockedRow || b.tile(col, i) == null)
+            {
+                // Skip
+//                System.out.println("i (blocked row): " + i);
+                continue;
+            }
+            /*System.out.println("b.tile (col, row): " + b.tile(col, row).value());
+            System.out.println("b.tile (col, i): " + b.tile(col, i).value());*/
+            if (b.tile(col, row).value() == b.tile(col, i).value())
+            {
+               /* System.out.println("(blocked row): " + blockedRow);*/
+                this.blocked = i;
+                return i;
+            }
+        }
+    return -1;
+    }
+
+    public int nullFill(int col, int row, Board b)
+    {
+        int rowStore = -1;
+        // Remember column would remain same.
+        for (int i = row + 1; i < b.size(); i++)
+        {
+            if (b.tile(col, i) == null)
+            {
+                rowStore = i;
+               /* System.out.println("RowStore: " + rowStore);
+                System.out.println(i);
+                System.out.println("B.tile: " + b.tile(col, i));*/
+            }
+        }
+        return rowStore;
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -137,7 +284,16 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        // Empty Space method is complete.
+
+        for (int i = 0; i < b.size(); i++)
+        {
+            for (int j = 0; j < b.size(); j++)
+            {
+                if (b.tile(i, j) == null)
+                    return true;
+            }
+        }
         return false;
     }
 
@@ -147,7 +303,18 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        // maxTileExists complete.
+
+        for (int i = 0; i < b.size(); i++)
+        {
+            for (int j = 0; j < b.size(); j++)
+            {
+                if (b.tile(i, j) == null)
+                    continue;
+                if (b.tile(i, j).value() == MAX_PIECE)
+                    return true;
+            }
+        }
         return false;
     }
 
@@ -158,10 +325,74 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        // One Move Exists complete.
+        // 1. At least one empty space
+        if (emptySpaceExists(b))
+        {
+            return true;
+        }
+        // 2. Two adjacent values
+        for (int i = 0; i < b.size(); i++)
+        {
+            for (int j = 0; j < b.size(); j++)
+            {
+                int tileValue = b.tile(i, j).value();
+                /*if (b.tile(i, j) == null)
+                    continue;*/
+                    int left = leftAdj(i, j, b);
+                    int right = rightAdj(i, j, b);
+                    int down = downAdj(i, j, b);
+                    int up = upAdj(i, j, b);
+
+                    if (left == tileValue
+                    ||  right == tileValue
+                    ||  down == tileValue
+                    ||  up == tileValue)
+                    {
+                        return true;
+
+                }
+            }
+        }
         return false;
     }
 
+    // Method to check if same value exists in the adjacent index.
+    // 1. Left
+    public static int leftAdj(int col, int row, Board b)
+    {
+        col--;
+        if (col < 0)
+            return -1;
+        return b.tile(col, row).value();
+    }
+
+    // 2. Right
+    public static int rightAdj(int col, int row, Board b)
+    {
+        col++;
+        if (col >= b.size())
+            return -1;
+        return b.tile(col, row).value();
+    }
+
+    // 3. Up
+    public static int upAdj(int col, int row, Board b)
+    {
+        row--;
+        if (row < 0)
+            return -1;
+        return b.tile(col, row).value();
+    }
+
+    // 4. Down
+    public static int downAdj(int col, int row, Board b)
+    {
+        row++;
+        if (row >= b.size())
+            return -1;
+        return b.tile(col, row).value();
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */
