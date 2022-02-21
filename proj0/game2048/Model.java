@@ -19,6 +19,9 @@ public class Model extends Observable {
 
     private  int blocked = -1;
 
+    private int spaceErrorRow = -1;
+    private int spaceErrorCol = -1;
+
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
      * to board.tile(c, r).  Be careful! It works like (x, y) coordinates.
@@ -182,22 +185,21 @@ public class Model extends Observable {
 
                 if (t != null)
                 {
-                   /* System.out.println("Empty Space: " + i + " " + j);*/
-                    int newRow = nullFill(i, j, board);
+                    /*System.out.println("Empty Space: " + i + " " + j);*/
+                    int newRow = nullFill(i, j, board, this.spaceErrorCol, this.spaceErrorRow);
+                    System.out.println(newRow);
                     if (newRow == -1)
                     {
                         continue;
                     }
 
                     boolean mergeOrNot = board.move(i, newRow, t);
-                    /*System.out.println(i + " Row (nullFill)" + newRow + "old Row: " + j);
-                    System.out.println(t);*/
+
+                    System.out.println("Row: " +  i + " Row (nullFill): " + newRow + " old Row: " + j);
+                    System.out.println(t);
+                    System.out.println(board);
                     changed = true;
-                    if (mergeOrNot)
-                    {
-                        int scoreKeeperNew = board.tile(i, newRow).value();
-                        score += scoreKeeperNew;
-                    }
+
                 }
 
             }
@@ -212,6 +214,34 @@ public class Model extends Observable {
             int scoreKeeperNew = board.tile(i, board.size() - 1).value();
             score += scoreKeeperNew;
         }*/
+
+        // For space error after adjacency error.
+        System.out.println("Space error row: " + this.spaceErrorRow);
+        if (this.spaceErrorRow != -1 && this.spaceErrorCol != -1)
+        {
+            System.out.println("Space error col: " + this.spaceErrorCol);
+            int i = this.spaceErrorCol;
+            int j = this.spaceErrorRow;
+
+                    int newRow = nullFill(i, j, board);
+            System.out.println("nullFill: " + newRow);
+                    if (newRow != -1)
+                    {
+                        Tile t = board.tile(i, j - 1);
+                        System.out.println(board);
+                        System.out.println("board.tile (WRIN): " + (board.tile(i, j - 1)));
+                        System.out.println("Row: " + i + " Row (nullFill): " + newRow + " old Row: " + j);
+                       if (!(board.tile(i, j - 1) == null)) {
+                           boolean mergeOrNot = board.move(i, newRow, t);
+
+                           System.out.println(t);
+                           System.out.println(board);
+                           changed = true;
+                       }
+                    }
+                }
+
+
 
         board.setViewingPerspective(Side.NORTH);
         checkGameOver();
@@ -251,20 +281,58 @@ public class Model extends Observable {
     return -1;
     }
 
-    public int nullFill(int col, int row, Board b)
+    public int nullFill(int col, int row, Board b, int spaceErrorCol, int spaceErrorRow)
     {
         int rowStore = -1;
         // Remember column would remain same.
         for (int i = row + 1; i < b.size(); i++)
         {
+            if (b.tile(col, i) != null)
+            {
+                this.spaceErrorCol = col;
+                this.spaceErrorRow = i;
+                System.out.println("Tile check: " + board.tile(col, i));
+                System.out.println("spaceError Row: " + i);
+                return rowStore;
+            }
+
             if (b.tile(col, i) == null)
             {
                 rowStore = i;
-               /* System.out.println("RowStore: " + rowStore);
+                System.out.println("RowStore: " + rowStore);
                 System.out.println(i);
-                System.out.println("B.tile: " + b.tile(col, i));*/
+                System.out.println("B.tile: " + b.tile(col, i));
+                return rowStore;
+            }
+
+        }
+        return rowStore;
+    }
+
+
+    public int nullFill(int col, int row, Board b)
+    {
+        int rowStore = -1;
+        // Remember column would remain same.
+        for (int i = row - 1; i < b.size(); i++)
+        {
+            System.out.println("col: " + col + "row: " + row);
+            System.out.println("After null check: " + b.tile(col, i));
+            if (b.tile(col, i) != null)
+            {
+                continue;
+            }
+
+            if (b.tile(col, i) == null)
+            {
+                rowStore = i;
+
+                System.out.println(i);
+                System.out.println("B.tile: " + b.tile(col, i));
+                System.out.println("rowStore: " + rowStore);
             }
         }
+        System.out.println("RowStore: " + rowStore);
         return rowStore;
     }
 
