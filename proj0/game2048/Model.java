@@ -187,7 +187,7 @@ public class Model extends Observable {
                 {
                     /*System.out.println("Empty Space: " + i + " " + j);*/
                     int newRow = nullFill(i, j, board, this.spaceErrorCol, this.spaceErrorRow);
-                    System.out.println(newRow);
+//                    System.out.println(newRow);
                     if (newRow == -1)
                     {
                         continue;
@@ -195,9 +195,9 @@ public class Model extends Observable {
 
                     boolean mergeOrNot = board.move(i, newRow, t);
 
-                    System.out.println("Row: " +  i + " Row (nullFill): " + newRow + " old Row: " + j);
-                    System.out.println(t);
-                    System.out.println(board);
+//                    System.out.println("Row: " +  i + " Row (nullFill): " + newRow + " old Row: " + j);
+//                    System.out.println(t);
+//                    System.out.println(board);
                     changed = true;
 
                 }
@@ -216,26 +216,26 @@ public class Model extends Observable {
         }*/
 
         // For space error after adjacency error.
-        System.out.println("Space error row: " + this.spaceErrorRow);
+//        System.out.println("Space error row: " + this.spaceErrorRow);
         if (this.spaceErrorRow != -1 && this.spaceErrorCol != -1)
         {
-            System.out.println("Space error col: " + this.spaceErrorCol);
+//            System.out.println("Space error col: " + this.spaceErrorCol);
             int i = this.spaceErrorCol;
             int j = this.spaceErrorRow;
 
                     int newRow = nullFill(i, j, board);
-            System.out.println("nullFill: " + newRow);
+//            System.out.println("nullFill: " + newRow);
                     if (newRow != -1)
                     {
                         Tile t = board.tile(i, j - 1);
-                        System.out.println(board);
-                        System.out.println("board.tile (WRIN): " + (board.tile(i, j - 1)));
-                        System.out.println("Row: " + i + " Row (nullFill): " + newRow + " old Row: " + j);
+//                        System.out.println(board);
+//                        System.out.println("board.tile (WRIN): " + (board.tile(i, j - 1)));
+//                        System.out.println("Row: " + i + " Row (nullFill): " + newRow + " old Row: " + j);
                        if (!(board.tile(i, j - 1) == null)) {
                            boolean mergeOrNot = board.move(i, newRow, t);
 
-                           System.out.println(t);
-                           System.out.println(board);
+//                           System.out.println(t);
+//                           System.out.println(board);
                            changed = true;
                        }
                     }
@@ -244,6 +244,8 @@ public class Model extends Observable {
 
 
         board.setViewingPerspective(Side.NORTH);
+        System.out.println(side);
+        System.out.println(board);
         checkGameOver();
         if (changed) {
             setChanged();
@@ -270,7 +272,7 @@ public class Model extends Observable {
                 continue;
             }
             /*System.out.println("b.tile (col, row): " + b.tile(col, row).value());
-            System.out.println("b.tile (col, i): " + b.tile(col, i).value());*/
+//            System.out.println("b.tile (col, i): " + b.tile(col, i).value());*/
             if (b.tile(col, row).value() == b.tile(col, i).value())
             {
                /* System.out.println("(blocked row): " + blockedRow);*/
@@ -287,7 +289,7 @@ public class Model extends Observable {
         // Remember column would remain same.
         for (int i = row + 1; i < b.size(); i++)
         {
-            if (b.tile(col, i) != null)
+            if (b.tile(col, i) != null && i < 3)
             {
                 this.spaceErrorCol = col;
                 this.spaceErrorRow = i;
@@ -299,9 +301,9 @@ public class Model extends Observable {
             if (b.tile(col, i) == null)
             {
                 rowStore = i;
-                System.out.println("RowStore: " + rowStore);
-                System.out.println(i);
-                System.out.println("B.tile: " + b.tile(col, i));
+//                System.out.println("RowStore: " + rowStore);
+//                System.out.println(i);
+//                System.out.println("B.tile: " + b.tile(col, i));
                 return rowStore;
             }
 
@@ -316,8 +318,8 @@ public class Model extends Observable {
         // Remember column would remain same.
         for (int i = row - 1; i < b.size(); i++)
         {
-            System.out.println("col: " + col + "row: " + row);
-            System.out.println("After null check: " + b.tile(col, i));
+//            System.out.println("col: " + col + "row: " + row);
+//            System.out.println("After null check: " + b.tile(col, i));
             if (b.tile(col, i) != null)
             {
                 continue;
@@ -327,12 +329,12 @@ public class Model extends Observable {
             {
                 rowStore = i;
 
-                System.out.println(i);
-                System.out.println("B.tile: " + b.tile(col, i));
-                System.out.println("rowStore: " + rowStore);
+//                System.out.println(i);
+//                System.out.println("B.tile: " + b.tile(col, i));
+//                System.out.println("rowStore: " + rowStore);
             }
         }
-        System.out.println("RowStore: " + rowStore);
+//        System.out.println("RowStore: " + rowStore);
         return rowStore;
     }
 
