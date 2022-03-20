@@ -1,0 +1,221 @@
+package deque;
+
+public class LinkedListDeque<generic>{
+
+    public class IntNode{
+
+        public IntNode prev;
+        public generic first;
+        public IntNode next;
+
+        public IntNode (IntNode prev, generic first, IntNode next)
+        {
+            this.prev = prev;
+            this.first = first;
+            this.next = next;
+        }
+
+    }
+
+
+
+    public IntNode sentinel;
+    public int size;
+    public IntNode last;
+
+    public LinkedListDeque()
+    {
+        sentinel = new IntNode(null, null, null);
+        last = null;
+        this.size = 0;
+    }
+
+    public LinkedListDeque(LinkedListDeque other)
+    {
+        sentinel = new IntNode(null, null, null);
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
+        int i = 0;
+        while (i < other.size)
+        {
+            addFirst((generic)other.get(i));
+            i++;
+        }
+    }
+
+    public void addFirst(generic x)
+    {
+        if (sentinel.next == null)
+        {
+            sentinel.next = new IntNode(sentinel, x, sentinel);
+            last = sentinel.next;
+            sentinel.prev = last;
+
+        }
+        else
+        {
+            sentinel.prev = null;
+            sentinel.next = new IntNode(sentinel, x, sentinel.next);
+            sentinel.next.next.prev = sentinel.next;
+            sentinel.prev = last;
+        }
+        this.size++;
+    }
+
+    public void addLast(generic x)
+    {
+        if (sentinel.next == null)
+        {
+            sentinel = new IntNode(null, null, null);
+            addFirst(x);
+        }
+        // Assuming we have already used addFirst()
+        else {
+            sentinel.prev.next = new IntNode(sentinel.prev, x, sentinel);
+            sentinel.prev = sentinel.prev.next;
+            last = sentinel.prev;
+            this.size++;
+        }
+    }
+
+    public boolean isEmpty()
+    {
+        return (this.size == 0);
+    }
+
+    public int size()
+    {
+        return this.size;
+    }
+
+
+
+    public void printDeque()
+    {
+        last = sentinel.next;
+        while (sentinel.next != sentinel)
+        {
+            System.out.print(sentinel.next.first + " ");
+            sentinel.next = sentinel.next.next;
+        }
+        sentinel.next = last;
+        last = sentinel.prev;
+        System.out.println();
+    }
+
+
+    public generic removeFirst()
+    {
+        if (isEmpty())
+        {
+            sentinel = null;
+            last = null;
+            return null;
+        }
+        generic store = sentinel.next.first;
+
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+        this.size--;
+
+        return store;
+    }
+
+    public generic removeLast()
+    {
+        if (isEmpty())
+        {
+            sentinel = null;
+            last = null;
+            return null;
+        }
+
+        generic store = sentinel.prev.first;
+
+        sentinel.prev.prev.next = sentinel;
+        sentinel.prev = sentinel.prev.prev;
+        last = sentinel.prev;
+        this.size--;
+        return store;
+    }
+
+    public generic get(int index)
+    {
+        int i = 0;
+        last = sentinel.next;
+        while (i < this.size && i >= 0)
+        {
+            if (i == index)
+            {
+                generic store = sentinel.next.first;
+                sentinel.next = last;
+                last = sentinel.prev;
+                return store;
+            }
+            sentinel.next = sentinel.next.next;
+            i++;
+        }
+        sentinel.next = last;
+        last = sentinel.prev;
+
+        return null;
+    }
+
+    public generic getRecursive(int index)
+    {
+        last = last.next;
+
+        if (index == 0)
+        {
+            generic store = last.next.first;
+            last = sentinel.prev;
+            return store;
+        }
+        // sentinel.next = sentinel.next.next;
+
+
+        return getRecursive(--index);
+    }
+
+    public static void main(String[] args)
+    {
+        /*LinkedListDeque<Integer> list = new LinkedListDeque<>();
+        list.addFirst(20);
+        list.addFirst(15);
+        list.addFirst(13);
+        list.addFirst(10);
+        list.addFirst(7);
+        list.addFirst(5);
+        list.addLast(23);
+        list.addLast(25);
+        list.addLast(30);
+        list.addFirst(3);
+        System.out.println(list.isEmpty());
+        System.out.println(list.size());
+        list.printDeque();
+        System.out.println(list.removeFirst());
+        System.out.println(list.removeLast());
+        list.printDeque();
+        System.out.println(list.get(4));
+        System.out.println(list.getRecursive(4));
+        System.out.println(list.get(4));
+        list.printDeque();
+
+        LinkedListDeque<Integer> listCopy = new LinkedListDeque<>(list);
+        System.out.println("Printing New Copy!");
+        list.printDeque();*/
+        /*LinkedListDeque<Integer> list = new LinkedListDeque<>();
+        list.addLast(10);
+        list.addLast(12);
+        list.addLast(15);*/
+
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
+        lld1.addFirst(3);
+
+        lld1.removeLast();
+        lld1.removeFirst();
+        lld1.removeLast();
+        lld1.removeFirst();
+        System.out.println(lld1.size());
+    }
+}
