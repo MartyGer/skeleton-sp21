@@ -1,12 +1,12 @@
 package deque;
 
-public class ArrayDeque<Generic> {
-    private Generic[] items;
+public class ArrayDeque<T> {
+    private T[] items;
     private int size;
     private double rFactor;
 
     public ArrayDeque() {
-        items = (Generic[]) new Object[8];
+        items = (T[]) new Object[8];
         size = 0;
         rFactor = 0;
     }
@@ -16,14 +16,14 @@ public class ArrayDeque<Generic> {
         return rFactor;
     }
 
-    public void addFirst(Generic item) {
+    public void addFirst(T item) {
         if (size == items.length) {
             sizeIncreaseFirst();
         }
         items[0] = item;
     }
 
-    public void addLast(Generic item) {
+    public void addLast(T item) {
 
         if (size == items.length) {
             sizeIncreaseLast();
@@ -32,50 +32,50 @@ public class ArrayDeque<Generic> {
         size++;
     }
 
-    public Generic[] sizeIncreaseLast() {
+    public T[] sizeIncreaseLast() {
 
         double newLengthDouble = items.length * 0.75;
         int newLengthInt = (int) newLengthDouble + items.length;
         System.out.println("New Int Length: " + newLengthInt);
 
-        Generic[] flag = (Generic[]) new Object[newLengthInt];
+        T[] flag = (T[]) new Object[newLengthInt];
         System.arraycopy(items, 0, flag, 0, size);
         items = flag;
 
         return items;
     }
 
-    public Generic[] sizeIncreaseFirst() {
+    public T[] sizeIncreaseFirst() {
         double newLengthDouble = items.length * 0.75;
         int newLengthInt = (int) newLengthDouble + items.length;
-        Generic[] flag = (Generic[]) new Object[newLengthInt];
+        T[] flag = (T[]) new Object[newLengthInt];
         System.arraycopy(items, 0, flag, 1, size);
         items = flag;
         return items;
     }
 
-    public Generic[] sizeDecreaseFirst() {
+    public T[] sizeDecreaseFirst() {
 
         double newLengthDouble = 0;
         if (rFactorCalc() < 0.25) {
             newLengthDouble = items.length * 0.75;
         }
         int newLengthInt = items.length - (int) newLengthDouble;
-        Generic[] flag = (Generic[]) new Object[newLengthInt];
+        T[] flag = (T[]) new Object[newLengthInt];
         System.arraycopy(items, 1, flag, 0, size);
         items = flag;
 
         return items;
     }
 
-    public Generic[] sizeDecreaseLast() {
+    public T[] sizeDecreaseLast() {
 
         double newLengthDouble = 0;
         if (rFactorCalc() < 0.25) {
             newLengthDouble = items.length * 0.75;
         }
         int newLengthInt = items.length - (int) newLengthDouble;
-        Generic[] flag = (Generic[]) new Object[newLengthInt];
+        T[] flag = (T[]) new Object[newLengthInt];
         System.arraycopy(items, 0, flag, 0, size - 1);
         items = flag;
 
@@ -98,22 +98,31 @@ public class ArrayDeque<Generic> {
         }
     }
 
-    public Generic removeFirst() {
-        Generic store = items[0];
+    public T removeFirst() {
+
+        if (size == 0)
+        {
+            return null;
+        }
+        T store = items[0];
         sizeDecreaseFirst();
         size--;
         return store;
     }
 
-    public Generic removeLast() {
-        Generic store = items[size - 1];
+    public T removeLast() {
+        if (size == 0)
+        {
+            return null;
+        }
+        T store = items[size - 1];
         sizeDecreaseLast();
         size--;
         return store;
 
     }
 
-    public Generic get(int index) {
+    public T get(int index) {
         return items[index];
     }
 
