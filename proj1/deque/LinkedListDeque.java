@@ -1,15 +1,14 @@
 package deque;
 
-public class LinkedListDeque<generic>{
+public class LinkedListDeque<Generic> {
 
-    public class IntNode{
+    public class IntNode {
 
-        public IntNode prev;
-        public generic first;
-        public IntNode next;
+        private IntNode prev;
+        private Generic first;
+        private IntNode next;
 
-        public IntNode (IntNode prev, generic first, IntNode next)
-        {
+        public IntNode(IntNode prev, Generic first, IntNode next) {
             this.prev = prev;
             this.first = first;
             this.next = next;
@@ -18,42 +17,35 @@ public class LinkedListDeque<generic>{
     }
 
 
+    private IntNode sentinel;
+    private int size;
+    private IntNode last;
 
-    public IntNode sentinel;
-    public int size;
-    public IntNode last;
-
-    public LinkedListDeque()
-    {
+    public LinkedListDeque() {
         sentinel = new IntNode(null, null, null);
         last = null;
         this.size = 0;
     }
 
-    public LinkedListDeque(LinkedListDeque other)
-    {
+    public LinkedListDeque(LinkedListDeque other) {
         sentinel = new IntNode(null, null, null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
+        size = other.size;
         int i = 0;
-        while (i < other.size)
-        {
-            addFirst((generic)other.get(i));
+        while (i < other.size) {
+            addFirst((Generic) other.get(i));
             i++;
         }
     }
 
-    public void addFirst(generic x)
-    {
-        if (sentinel.next == null)
-        {
+    public void addFirst(Generic x) {
+        if (sentinel.next == null) {
             sentinel.next = new IntNode(sentinel, x, sentinel);
             last = sentinel.next;
             sentinel.prev = last;
 
-        }
-        else
-        {
+        } else {
             sentinel.prev = null;
             sentinel.next = new IntNode(sentinel, x, sentinel.next);
             sentinel.next.next.prev = sentinel.next;
@@ -62,15 +54,11 @@ public class LinkedListDeque<generic>{
         this.size++;
     }
 
-    public void addLast(generic x)
-    {
-        if (sentinel.next == null)
-        {
+    public void addLast(Generic x) {
+        if (sentinel.next == null) {
             sentinel = new IntNode(null, null, null);
             addFirst(x);
-        }
-        // Assuming we have already used addFirst()
-        else {
+        } else {
             sentinel.prev.next = new IntNode(sentinel.prev, x, sentinel);
             sentinel.prev = sentinel.prev.next;
             last = sentinel.prev;
@@ -78,23 +66,18 @@ public class LinkedListDeque<generic>{
         }
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return (this.size == 0);
     }
 
-    public int size()
-    {
+    public int size() {
         return this.size;
     }
 
 
-
-    public void printDeque()
-    {
+    public void printDeque() {
         last = sentinel.next;
-        while (sentinel.next != sentinel)
-        {
+        while (sentinel.next != sentinel) {
             System.out.print(sentinel.next.first + " ");
             sentinel.next = sentinel.next.next;
         }
@@ -104,15 +87,13 @@ public class LinkedListDeque<generic>{
     }
 
 
-    public generic removeFirst()
-    {
-        if (isEmpty())
-        {
+    public Generic removeFirst() {
+        if (isEmpty()) {
             sentinel = null;
             last = null;
             return null;
         }
-        generic store = sentinel.next.first;
+        Generic store = sentinel.next.first;
 
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
@@ -121,16 +102,14 @@ public class LinkedListDeque<generic>{
         return store;
     }
 
-    public generic removeLast()
-    {
-        if (isEmpty())
-        {
+    public Generic removeLast() {
+        if (isEmpty()) {
             sentinel = null;
             last = null;
             return null;
         }
 
-        generic store = sentinel.prev.first;
+        Generic store = sentinel.prev.first;
 
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
@@ -139,15 +118,12 @@ public class LinkedListDeque<generic>{
         return store;
     }
 
-    public generic get(int index)
-    {
+    public Generic get(int index) {
         int i = 0;
         last = sentinel.next;
-        while (i < this.size && i >= 0)
-        {
-            if (i == index)
-            {
-                generic store = sentinel.next.first;
+        while (i < this.size && i >= 0) {
+            if (i == index) {
+                Generic store = sentinel.next.first;
                 sentinel.next = last;
                 last = sentinel.prev;
                 return store;
@@ -161,13 +137,11 @@ public class LinkedListDeque<generic>{
         return null;
     }
 
-    public generic getRecursive(int index)
-    {
+    public Generic getRecursive(int index) {
         last = last.next;
 
-        if (index == 0)
-        {
-            generic store = last.next.first;
+        if (index == 0) {
+            Generic store = last.next.first;
             last = sentinel.prev;
             return store;
         }
@@ -177,8 +151,7 @@ public class LinkedListDeque<generic>{
         return getRecursive(--index);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         /*LinkedListDeque<Integer> list = new LinkedListDeque<>();
         list.addFirst(20);
         list.addFirst(15);
