@@ -4,6 +4,7 @@ public class ArrayDeque<T> {
     private T[] items;
     private int size;
     private double rFactor;
+    private T[] firstPointer;
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
@@ -21,6 +22,7 @@ public class ArrayDeque<T> {
             sizeIncreaseFirst();
         }
         items[0] = item;
+        size++;
     }
 
     public void addLast(T item) {
@@ -46,9 +48,15 @@ public class ArrayDeque<T> {
     }
 
     public T[] sizeIncreaseFirst() {
-        double newLengthDouble = items.length * 0.75;
-        int newLengthInt = (int) newLengthDouble + items.length;
-        T[] flag = (T[]) new Object[newLengthInt];
+        if (size == items.length) {
+            double newLengthDouble = items.length * 0.75;
+            int newLengthInt = (int) newLengthDouble + items.length;
+            T[] flag = (T[]) new Object[newLengthInt];
+            System.arraycopy(items, 0, flag, 1, size);
+            items = flag;
+            return items;
+        }
+        T[] flag = items;
         System.arraycopy(items, 0, flag, 1, size);
         items = flag;
         return items;
@@ -128,28 +136,12 @@ public class ArrayDeque<T> {
 
         long start = System.currentTimeMillis();
         ArrayDeque aList = new ArrayDeque();
-        aList.addLast(10);
+        /*aList.addLast(10);
         aList.addLast(15);
         aList.addLast(10);
         aList.addLast(15);
         aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
+
         System.out.println("\nRFACTOR: " + aList.rFactorCalc());
         aList.addLast(10);
         aList.addLast(15);
@@ -193,9 +185,23 @@ public class ArrayDeque<T> {
         aList.removeFirst();
         aList.removeFirst();
         aList.removeFirst();
+        aList.removeLast();*/
+
+        aList.addFirst(10);
+        aList.addLast(20);
+        aList.addFirst(5);
+        aList.addLast(3);
+        aList.printDeque();
+        aList.removeFirst();
         aList.removeLast();
-
-
+        aList.removeFirst();
+        aList.removeLast();
+        System.out.println(aList.removeFirst());
+        aList.addFirst(10);
+        aList.addLast(20);
+        aList.addFirst(5);
+        aList.addLast(3);
+        System.out.println(aList.isEmpty());
         aList.printDeque();
         System.out.println("\nRFACTOR: " + aList.rFactorCalc());
         System.out.println(aList.items.length);
