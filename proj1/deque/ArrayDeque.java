@@ -78,8 +78,8 @@ public class ArrayDeque<T> {
 
         if (size == 0) {
             return null;
-        } else if ((double) size / aList.length < (1 - RFACTOR) && size > 16) {
-            double tempSize = size * (1 - RFACTOR);
+        } else if ((double) size / aList.length < (1 - RFACTOR)) {
+            double tempSize = aList.length * (1 - RFACTOR);
             T temp = aList[0];
             T[] tempaList = (T[]) new Object[(int) tempSize];
             System.arraycopy(aList, 1, tempaList, 0, size);
@@ -88,7 +88,7 @@ public class ArrayDeque<T> {
             return temp;
         }
         T temp = aList[0];
-        System.arraycopy(aList, 1, aList, 0, size);
+        System.arraycopy(aList, 1, aList, 0, size - 1);
         size--;
         return temp;
     }
@@ -99,7 +99,7 @@ public class ArrayDeque<T> {
             return null;
         }
         size--;
-        if ((double) size / aList.length < (1 - RFACTOR) && size > 16) {
+        if ((double) size / aList.length < (1 - RFACTOR)) {
 
             double tempSize = size * (1 + RFACTOR);
             T temp = aList[size];
@@ -124,13 +124,7 @@ public class ArrayDeque<T> {
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
         ArrayDeque aList = new ArrayDeque();
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
 
-        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
         aList.addLast(10);
         aList.addLast(15);
         aList.addLast(10);
@@ -139,63 +133,20 @@ public class ArrayDeque<T> {
         aList.addLast(15);
         aList.addLast(10);
         aList.addLast(15);
-        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
-        //System.out.println(aList.items.length);
-        System.out.println(aList.size());
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(10);
-
         aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
-        aList.removeFirst();
+        aList.removeLast();
         aList.removeFirst();
         aList.removeFirst();
         aList.removeLast();
-
-        aList.addFirst(10);
-        aList.addLast(20);
-        aList.addFirst(5);
-        aList.addLast(3);
+        aList.removeFirst();
+        aList.removeFirst();
         aList.printDeque();
-        aList.removeFirst();
         aList.removeLast();
-        aList.removeFirst();
-        aList.removeLast();
-        System.out.println(aList.size());
-
-        System.out.println(aList.removeFirst());
-        aList.addFirst(10);
-        aList.addLast(20);
-        aList.addFirst(5);
-        aList.addLast(3);
-        System.out.println(aList.isEmpty());
         aList.printDeque();
-        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
-        //System.out.println(aList.items.length);
-        System.out.println(aList.size());
+
+//        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
+//        //System.out.println(aList.items.length);
+//        System.out.println(aList.size());
         long end = System.currentTimeMillis();
         System.out.println("\n Time taken: " + (end - start) + " ms");
     }
