@@ -209,7 +209,7 @@ public class LinkedListDeque<T> {
         tail.next = new Node(tail, item, head);
         //tail.prev.next = tail;
         tail = tail.next;
-        head.prev = tail;
+        head.prev = tail; // tail
         size++;
     }
 
@@ -293,10 +293,6 @@ public class LinkedListDeque<T> {
         Node pointer = head;
         for (int i = 0; i < index; i++)
         {
-            if (i == index)
-            {
-                return pointer.first;
-            }
             pointer = pointer.next;
         }
 
