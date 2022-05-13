@@ -179,7 +179,7 @@ public class LinkedListDeque<T> {
 
     public void addFirst(T item)
     {
-        if (head.next == null)
+        if (size == 0)
         {
             head = new Node(head, item, head);
             head.next = head;
@@ -197,7 +197,7 @@ public class LinkedListDeque<T> {
 
     public void addLast(T item)
     {
-        if (head.next == null)
+        if (size == 0)
         {
             head = new Node(head, item, head);
             head.next = head;
@@ -349,6 +349,22 @@ public class LinkedListDeque<T> {
         list.printDeque();
         System.out.println(list.getRecursive(1));
         System.out.println(list.get(1));
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.removeFirst();
+        list.addLast(20);
+        list.addFirst(10);
+        list.addFirst(15);
+        list.addLast(30);
+        list.addFirst(40);
+        list.addFirst(5);
+        list.addFirst(3);
+        list.printDeque();
+
 
     }
 }
