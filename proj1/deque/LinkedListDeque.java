@@ -1,6 +1,6 @@
 package deque;
 
-public class LinkedListDeque<T> {
+/*public class LinkedListDeque<T> {
 
     private class Node {
         private Node prev;
@@ -141,10 +141,200 @@ public class LinkedListDeque<T> {
         }
         pointerRec = pointerRec.next;
         return getRecursive(pointerRec, index - 1);
+    }*/
+
+public class LinkedListDeque<T> {
+
+    public class Node{
+        public Node prev;
+        public T first;
+        public Node next;
+
+        public Node(Node prev, T first, Node next)
+        {
+            this.prev = prev;
+            this.first = first;
+            this.next = next;
+        }
     }
+
+    private Node head;
+    private int size;
+    private Node tail;
+
+    public LinkedListDeque()
+    {
+        head = new Node(null, null, null);
+        size = 0;
+    }
+
+    public LinkedListDeque(T item)
+    {
+        head = new Node(null, item, null);
+        head.next = head;
+        head.prev = head;
+        tail = head;
+        size++;
+    }
+
+    public void addFirst(T item)
+    {
+        if (head.next == null)
+        {
+            head = new Node(head, item, head);
+            head.next = head;
+            head.prev = head;
+            tail = head;
+            size++;
+            return;
+        }
+        head = new Node(head, item, head);
+        head.prev = tail;
+        tail.next = head;
+        head.next.prev = head;
+        size++;
+    }
+
+    public void addLast(T item)
+    {
+        if (head.next == null)
+        {
+            head = new Node(head, item, head);
+            head.next = head;
+            head.prev = head;
+            tail = head;
+            size++;
+            return;
+        }
+        tail.next = new Node(tail, item, head);
+        //tail.prev.next = tail;
+        tail = tail.next;
+        head.prev = tail;
+        size++;
+    }
+
+    public boolean isEmpty()
+    {
+        return size == 0;
+    }
+
+    public int size()
+    {
+        return size;
+    }
+
+
+
+    public void printDeque()
+    {
+        Node pointer = head;
+        for (int i = 0; i < size; i++)
+        {
+            if (i == size - 1)
+            {
+                System.out.println(pointer.first);
+                return;
+            }
+            System.out.print(pointer.first + " -> ");
+            pointer = pointer.next;
+        }
+    }
+
+
+    public T removeFirst()
+    {
+        if (size == 0)
+        {
+            return null;
+        }
+
+        else if (size == 1)
+        {
+            T storeFirst = head.first;
+            head = null;
+            tail = null;
+            size--;
+            return storeFirst;
+        }
+
+        T storeFirst = head.first;
+        head = head.next;
+        head.prev = tail;
+        tail.next = head.next;
+        size--;
+        return storeFirst;
+    }
+
+    public T removeLast()
+    {
+        if (size == 0)
+        {
+            return null;
+        }
+
+        else if (size == 1)
+        {
+            T storeLast = tail.first;
+            head = null;
+            tail = null;
+            size--;
+            return storeLast;
+        }
+
+        T storeLast = tail.first;
+        tail = tail.prev;
+        head.prev = tail;
+        tail.next = head;
+        size--;
+        return storeLast;
+    }
+    public T get(int index)
+    {
+        Node pointer = head;
+        for (int i = 0; i < index; i++)
+        {
+            if (i == index)
+            {
+                return pointer.first;
+            }
+            pointer = pointer.next;
+        }
+
+        return pointer.first;
+    }
+
+    public T getRecursive(int index)
+    {
+        Node pointer = head;
+        return getRec(pointer, index);
+    }
+
+    public T getRec(Node pointer, int index)
+    {
+        if (index == 0)
+        {
+            return pointer.first;
+        }
+
+        return getRec(pointer.next, index - 1);
+    }
+
+    /*public static void main(String[] args) {
+        LinkedListDeque<Integer> list = new LinkedListDeque<>();
+        list.addLast(12);
+        list.addFirst(5);
+        list.addFirst(3);
+        list.addFirst(1);
+        list.addLast(15);
+        System.out.println(list.getRecursive(4));
+        list.removeLast();
+        list.printDeque();
+    }
+}*/
 
     public static void main(String[] args) {
         LinkedListDeque<Integer> list = new LinkedListDeque<>();
+        System.out.println(list.isEmpty());
         list.addLast(20);
         list.addFirst(10);
         list.addFirst(15);
