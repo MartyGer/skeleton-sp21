@@ -2,128 +2,140 @@ package deque;
 
 public class ArrayDeque<T> {
 
-    // These will be used for the indexing purposes!
-    private int frontIndex;
+    private T[] sentinel;
     private int size;
-    private double RFACTOR = 0.25;
+    private int head = 3;
+    private int tail = head + 1;
 
-    private T[] aList;
+    private int INTITIAL_LENGTH = 8;
+
+    private int end = INTITIAL_LENGTH - 1;
+    private int start = 0;
+
+    private double R_FACTOR = 1.75;
+
 
     public ArrayDeque() {
-        aList = (T[]) new Object[8];
+        sentinel = (T[]) new Object[INTITIAL_LENGTH];
     }
 
     public ArrayDeque(T item) {
-        aList = (T[]) new Object[8];
-        aList[size] = item;
+        sentinel = (T[]) new Object[INTITIAL_LENGTH];
+        sentinel[head] = item;
+        head--;
         size++;
     }
-
+    
     public void addFirst(T item) {
-       /* if (aList[frontIndex] == null) {
+        // TODO resizing
+        if (size == sentinel.length) {
+            double initialTemp = sentinel.length * R_FACTOR;
+            T[] temp = (T[]) new Object[(int) initialTemp];
+            int mid = ((end - start) / 2);
+            System.arraycopy(sentinel, start, temp, mid, size);
+            sentinel = temp;
+            head = mid - 1;
+            tail = size + mid;
 
-            aList[frontIndex] = item;
-            size++;
-            return;
-        }*/
-        if (size == aList.length) {
-            double tempSize = (double) size * (1 + RFACTOR);
-            T[] temp = (T[]) new Object[(int) tempSize];
-            System.arraycopy(aList, 0, temp, 1, size - 1);
-            temp[frontIndex] = item;
-            aList = temp;
-            frontIndex = 0;
-            size++;
+            // Start would be zero
+            end = sentinel.length - 1;
+
         }
 
-        System.arraycopy(aList, 0, aList, 1, size);
-        aList[frontIndex] = item;
-        frontIndex = 0;
+        if (head == start - 1) {
+            head = end;
+        }
+        sentinel[head] = item;
+        head--;
         size++;
     }
 
+    
     public void addLast(T item) {
-        if (size == aList.length) {
-            double tempSize = (double) size * (1 + RFACTOR);
-            T[] temp = (T[]) new Object[(int) tempSize];
-            System.arraycopy(aList, 0, temp, 0, size);
-            temp[size] = item;
-            aList = temp;
-            size++;
-            return;
+        // TODO resizing
+        if (size == sentinel.length) {
+            double initialTemp = sentinel.length * R_FACTOR;
+            T[] temp = (T[]) new Object[(int) initialTemp];
+            int mid = ((end - start) / 2);
+            System.arraycopy(sentinel, start, temp, mid, size);
+            sentinel = temp;
+            head = mid - 1;
+            tail = size + mid;
+
+            // Start would be zero
+            end = sentinel.length - 1;
+
         }
 
-        aList[size] = item;
+        if (tail == end + 1) {
+            tail = start;
+        }
+
+        sentinel[tail] = item;
+        tail++;
         size++;
     }
 
+    
+    public boolean isEmpty() {
+        return size > 0;
+    }
+
+    
     public int size() {
         return size;
     }
 
-    public boolean isEmpty() {
-        return (size() == 0);
-    }
-
+    
     public void printDeque() {
-        int i = 0;
-        while (i < size) {
-            System.out.print(aList[i] + " ");
-            i++;
+        for (int i = 0; i < sentinel.length; i++) {
+            System.out.print(sentinel[i] + " ");
         }
         System.out.println();
     }
 
+    
     public T removeFirst() {
-
-        if (size == 0) {
-            return null;
-        } else if ((double) size / aList.length < (1 - RFACTOR)) {
-            double tempSize = aList.length * (1 - RFACTOR);
-            T temp = aList[0];
-            T[] tempaList = (T[]) new Object[(int) tempSize];
-            System.arraycopy(aList, 1, tempaList, 0, size);
-            aList = tempaList;
+        T store;
+        if (head == end) {
+            head = start;
+            store = sentinel[head];
+            sentinel[head] = null;
             size--;
-            return temp;
+            return store;
         }
-        T temp = aList[0];
-        System.arraycopy(aList, 1, aList, 0, size - 1);
+        store = sentinel[head + 1];
+        sentinel[head + 1] = null;
+        head++;
         size--;
-        return temp;
+        return store;
     }
 
+    
     public T removeLast() {
-
-        if (size == 0) {
-            return null;
+        T store;
+        if (tail == start) {
+            tail = end;
+            store = sentinel[tail];
+            sentinel[tail] = null;
+            size--;
+            return store;
         }
+        store = sentinel[tail - 1];
+        sentinel[tail - 1] = null;
+        tail--;
         size--;
-        if ((double) size / aList.length < (1 - RFACTOR)) {
-
-            double tempSize = size * (1 + RFACTOR);
-            T temp = aList[size];
-            T[] tempaList = (T[]) new Object[(int) tempSize];
-            System.arraycopy(aList, 0, tempaList, 0, size);
-            aList = tempaList;
-
-            return temp;
-        }
-        T temp = aList[size];
-        T[] tempaList = (T[]) new Object[aList.length];
-        System.arraycopy(aList, 0, tempaList, 0, size);
-        aList = tempaList;
-
-        return temp;
+        return store;
     }
 
+    
     public T get(int index) {
-        return aList[index];
+        return sentinel[index];
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        ArrayDeque aList = new ArrayDeque();
+        ArrayDeque<Integer> aList = new ArrayDeque<>();
 
         aList.addLast(10);
         aList.addLast(15);
@@ -133,6 +145,7 @@ public class ArrayDeque<T> {
         aList.addLast(15);
         aList.addLast(10);
         aList.addLast(15);
+        aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
@@ -143,9 +156,10 @@ public class ArrayDeque<T> {
         aList.printDeque();
         aList.removeLast();
         aList.printDeque();
+        aList.addFirst(10);
         aList.addLast(10);
         aList.addLast(15);
-        aList.addLast(10);
+        aList.addFirst(10);
         aList.addLast(15);
         aList.addLast(10);
         aList.addLast(15);
@@ -168,5 +182,7 @@ public class ArrayDeque<T> {
 //        System.out.println(aList.size());
         long end = System.currentTimeMillis();
         System.out.println("\n Time taken: " + (end - start) + " ms");
+
+
     }
 }
