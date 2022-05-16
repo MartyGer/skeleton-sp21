@@ -95,10 +95,13 @@ public class ArrayDeque<T> {
             check = 1;
         }
         for (int i = head + 1; i != store; i++) {
+
             if (i == end) {
                 System.out.print(sentinel[i] + " ");
                 i = start;
             }
+            if (sentinel[i] == null)
+                return;
             if (check == 1) {
                 store = head + 1;
                 check = 0;
@@ -151,7 +154,7 @@ public class ArrayDeque<T> {
 
     public T get(int index) {
         // We will use recursion
-        if (index >= sentinel.length) {
+        /*if (index >= sentinel.length) {
             return null;
         }
         int i = 0;
@@ -166,7 +169,13 @@ public class ArrayDeque<T> {
             i++;
             headCopy++;
         }
-        return null;
+        return null;*/
+
+        if (head + 1 + index >= sentinel.length)
+        {
+            return sentinel[(head + 1 + index) - sentinel.length];
+        }
+        return sentinel[head + 1 + index];
     }
 
     public static void main(String[] args) {
@@ -181,8 +190,63 @@ public class ArrayDeque<T> {
         aList.addLast(15);
         aList.addLast(16);
         aList.addLast(17);
-        System.out.println(aList.get(5));
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
+        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
+        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
+        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
+        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
+        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(12);
+        aList.addLast(12);
+        aList.addLast(12);
         aList.printDeque();
+        System.out.println(aList.get(2));
+        System.out.println(aList.get(23));
+        System.out.println(aList.get(31));
+        /*aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
@@ -215,7 +279,7 @@ public class ArrayDeque<T> {
         aList.printDeque();
         ArrayDeque<Integer> aList2 = new ArrayDeque<>();
         System.out.println(aList2.isEmpty());
-
+*/
 //        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
 //        //System.out.println(aList.items.length);
 //        System.out.println(aList.size());
