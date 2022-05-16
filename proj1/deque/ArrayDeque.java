@@ -12,7 +12,7 @@ public class ArrayDeque<T> {
     private int end = INTITIAL_LENGTH - 1;
     private int start = 0;
 
-    private double R_FACTOR = 1.75;
+    private double R_FACTOR = 1.25;
 
 
     public ArrayDeque() {
@@ -25,7 +25,7 @@ public class ArrayDeque<T> {
         head--;
         size++;
     }
-    
+
     public void addFirst(T item) {
         // TODO resizing
         if (size == sentinel.length) {
@@ -50,13 +50,13 @@ public class ArrayDeque<T> {
         size++;
     }
 
-    
+
     public void addLast(T item) {
         // TODO resizing
         if (size == sentinel.length) {
             double initialTemp = sentinel.length * R_FACTOR;
             T[] temp = (T[]) new Object[(int) initialTemp];
-            int mid = ((end - start) / 2);
+            int mid = ((temp.length - end) / 2);
             System.arraycopy(sentinel, start, temp, mid, size);
             sentinel = temp;
             head = mid - 1;
@@ -76,26 +76,43 @@ public class ArrayDeque<T> {
         size++;
     }
 
-    
+
     public boolean isEmpty() {
-        return size > 0;
+        return size == 0;
     }
 
-    
+
     public int size() {
         return size;
     }
 
-    
+
     public void printDeque() {
-        for (int i = 0; i < sentinel.length; i++) {
+        int store = tail;
+        int check = 0;
+        if (size == sentinel.length) {
+            store = head;
+            check = 1;
+        }
+        for (int i = head + 1; i != store; i++) {
+            if (i == end) {
+                System.out.print(sentinel[i] + " ");
+                i = start;
+            }
+            if (check == 1) {
+                store = head + 1;
+                check = 0;
+            }
             System.out.print(sentinel[i] + " ");
         }
         System.out.println();
     }
 
-    
+
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         T store;
         if (head == end) {
             head = start;
@@ -111,8 +128,11 @@ public class ArrayDeque<T> {
         return store;
     }
 
-    
+
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         T store;
         if (tail == start) {
             tail = end;
@@ -128,7 +148,7 @@ public class ArrayDeque<T> {
         return store;
     }
 
-    
+
     public T get(int index) {
         return sentinel[index];
     }
@@ -138,13 +158,13 @@ public class ArrayDeque<T> {
         ArrayDeque<Integer> aList = new ArrayDeque<>();
 
         aList.addLast(10);
+        aList.addLast(11);
+        aList.addLast(12);
+        aList.addLast(13);
+        aList.addLast(14);
         aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
-        aList.addLast(10);
-        aList.addLast(15);
+        aList.addLast(16);
+        aList.addLast(17);
         aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
@@ -175,7 +195,8 @@ public class ArrayDeque<T> {
         aList.printDeque();
         aList.removeLast();
         aList.printDeque();
-
+        ArrayDeque<Integer> aList2 = new ArrayDeque<>();
+        System.out.println(aList2.isEmpty());
 
 //        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
 //        //System.out.println(aList.items.length);
