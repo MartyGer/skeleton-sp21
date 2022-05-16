@@ -150,7 +150,23 @@ public class ArrayDeque<T> {
 
 
     public T get(int index) {
-        return sentinel[index];
+        // We will use recursion
+        if (index >= sentinel.length) {
+            return null;
+        }
+        int i = 0;
+        int headCopy = head + 1;
+        while (i < sentinel.length) {
+            if (headCopy == size) {
+                headCopy = start;
+            }
+            if (i == index) {
+                return sentinel[headCopy];
+            }
+            i++;
+            headCopy++;
+        }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -165,6 +181,7 @@ public class ArrayDeque<T> {
         aList.addLast(15);
         aList.addLast(16);
         aList.addLast(17);
+        System.out.println(aList.get(5));
         aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
@@ -185,6 +202,7 @@ public class ArrayDeque<T> {
         aList.addLast(15);
         aList.addLast(10);
         aList.addLast(15);
+
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
