@@ -1,5 +1,6 @@
 package deque;
 
+import java.util.Iterator;
 /*public class LinkedListDeque<T> {
 
     private class Node {
@@ -143,15 +144,14 @@ package deque;
         return getRecursive(pointerRec, index - 1);
     }*/
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
-    public class Node{
-        public Node prev;
-        public T first;
-        public Node next;
+    public class Node {
+        private Node prev;
+        private T first;
+        private Node next;
 
-        public Node(Node prev, T first, Node next)
-        {
+        public Node(Node prev, T first, Node next) {
             this.prev = prev;
             this.first = first;
             this.next = next;
@@ -162,14 +162,12 @@ public class LinkedListDeque<T> {
     private int size;
     private Node tail;
 
-    public LinkedListDeque()
-    {
+    public LinkedListDeque() {
         head = new Node(null, null, null);
         size = 0;
     }
 
-    public LinkedListDeque(T item)
-    {
+    public LinkedListDeque(T item) {
         head = new Node(null, item, null);
         head.next = head;
         head.prev = head;
@@ -177,10 +175,9 @@ public class LinkedListDeque<T> {
         size++;
     }
 
-    public void addFirst(T item)
-    {
-        if (size == 0)
-        {
+    @Override
+    public void addFirst(T item) {
+        if (size == 0) {
             head = new Node(head, item, head);
             head.next = head;
             head.prev = head;
@@ -195,10 +192,9 @@ public class LinkedListDeque<T> {
         size++;
     }
 
-    public void addLast(T item)
-    {
-        if (size == 0)
-        {
+    @Override
+    public void addLast(T item) {
+        if (size == 0) {
             head = new Node(head, item, head);
             head.next = head;
             head.prev = head;
@@ -213,25 +209,17 @@ public class LinkedListDeque<T> {
         size++;
     }
 
-    public boolean isEmpty()
-    {
-        return size == 0;
-    }
-
-    public int size()
-    {
+    @Override
+    public int size() {
         return size;
     }
 
 
-
-    public void printDeque()
-    {
+    @Override
+    public void printDeque() {
         Node pointer = head;
-        for (int i = 0; i < size; i++)
-        {
-            if (i == size - 1)
-            {
+        for (int i = 0; i < size; i++) {
+            if (i == size - 1) {
                 System.out.println(pointer.first);
                 return;
             }
@@ -240,16 +228,11 @@ public class LinkedListDeque<T> {
         }
     }
 
-
-    public T removeFirst()
-    {
-        if (size == 0)
-        {
+    @Override
+    public T removeFirst() {
+        if (size == 0) {
             return null;
-        }
-
-        else if (size == 1)
-        {
+        } else if (size == 1) {
             T storeFirst = head.first;
             head = null;
             tail = null;
@@ -265,15 +248,11 @@ public class LinkedListDeque<T> {
         return storeFirst;
     }
 
-    public T removeLast()
-    {
-        if (size == 0)
-        {
+    @Override
+    public T removeLast() {
+        if (size == 0) {
             return null;
-        }
-
-        else if (size == 1)
-        {
+        } else if (size == 1) {
             T storeLast = tail.first;
             head = null;
             tail = null;
@@ -288,27 +267,24 @@ public class LinkedListDeque<T> {
         size--;
         return storeLast;
     }
-    public T get(int index)
-    {
+
+    @Override
+    public T get(int index) {
         Node pointer = head;
-        for (int i = 0; i < index; i++)
-        {
+        for (int i = 0; i < index; i++) {
             pointer = pointer.next;
         }
 
         return pointer.first;
     }
 
-    public T getRecursive(int index)
-    {
+    public T getRecursive(int index) {
         Node pointer = head;
         return getRec(pointer, index);
     }
 
-    public T getRec(Node pointer, int index)
-    {
-        if (index == 0)
-        {
+    public T getRec(Node pointer, int index) {
+        if (index == 0) {
             return pointer.first;
         }
 
@@ -327,6 +303,52 @@ public class LinkedListDeque<T> {
         list.printDeque();
     }
 }*/
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+
+    public class LinkedListIterator implements Iterator<T> {
+        // An iterator must have the following 2 functions
+        int temp = 0;
+        Node tempLL = head;
+
+        public boolean hasNext() {
+            return (temp != size);
+        }
+
+        public T next() {
+            T tempFirst = tempLL.first;
+            tempLL = tempLL.next;
+            temp++;
+            return tempFirst;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof LinkedListDeque)) {
+            return false;
+        }
+        LinkedListDeque<T> object = (LinkedListDeque<T>) o;
+        if (object.getClass() != this.getClass()) {
+            return false;
+        }
+
+        if (object.size() != size()) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (object.get(i) != this.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static void main(String[] args) {
         LinkedListDeque<Integer> list = new LinkedListDeque<>();
@@ -360,6 +382,25 @@ public class LinkedListDeque<T> {
         list.addFirst(5);
         list.addFirst(3);
         list.printDeque();
+
+        Iterator<Integer> iter = list.iterator();
+        for (Integer i : list) {
+            System.out.println(i);
+        }
+
+        LinkedListDeque<Integer> list2 = new LinkedListDeque<>();
+        list2.addLast(20);
+        list2.addFirst(10);
+        list2.addFirst(15);
+        list2.addLast(30);
+        list2.addFirst(40);
+        list2.addFirst(5);
+        list2.addFirst(3);
+
+        System.out.println("Are these two equal? " + list2.equals(list));
+        LinkedListDeque<String> list3 = new LinkedListDeque<>();
+        list3.addFirst("20");
+        list3.equals(list);
 
 
     }

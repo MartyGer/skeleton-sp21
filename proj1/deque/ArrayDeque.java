@@ -1,9 +1,10 @@
 package deque;
 
-public class ArrayDeque<T> {
+import java.util.Iterator;
 
-    private T[] sentinel;
-    private int size;
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
+    public T[] sentinel;
+    public int size;
     private int head = 3;
     private int tail = head + 1;
 
@@ -26,6 +27,7 @@ public class ArrayDeque<T> {
         size++;
     }
 
+    @Override
     public void addFirst(T item) {
         // TODO resizing
         if (size == sentinel.length) {
@@ -50,7 +52,7 @@ public class ArrayDeque<T> {
         size++;
     }
 
-
+    @Override
     public void addLast(T item) {
         // TODO resizing
         if (size == sentinel.length) {
@@ -76,19 +78,14 @@ public class ArrayDeque<T> {
         size++;
     }
 
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-
+    @Override
     public int size() {
         return size;
     }
 
-
+    @Override
     public void printDeque() {
-        int store = tail;
+        /*int store = tail;
         int check = 0;
         if (size == sentinel.length) {
             store = head;
@@ -108,10 +105,14 @@ public class ArrayDeque<T> {
             }
             System.out.print(sentinel[i] + " ");
         }
+        System.out.println();*/
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i) + " ");
+        }
         System.out.println();
     }
 
-
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -131,7 +132,7 @@ public class ArrayDeque<T> {
         return store;
     }
 
-
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -151,9 +152,8 @@ public class ArrayDeque<T> {
         return store;
     }
 
-
+    @Override
     public T get(int index) {
-        // We will use recursion
         /*if (index >= sentinel.length) {
             return null;
         }
@@ -171,14 +171,31 @@ public class ArrayDeque<T> {
         }
         return null;*/
 
-        if (head + 1 + index >= sentinel.length)
-        {
+        if (head + 1 + index >= sentinel.length) {
             return sentinel[(head + 1 + index) - sentinel.length];
         }
         return sentinel[head + 1 + index];
     }
 
-    public static void main(String[] args) {
+    public Iterator<T> iterator() {
+        return new ArrayIterator();
+    }
+
+    public class ArrayIterator implements Iterator<T> {
+        int wizPos = 0;
+
+        public boolean hasNext() {
+            return wizPos < size;
+        }
+
+        public T next() {
+            T temp = get(wizPos);
+            wizPos++;
+            return temp;
+        }
+    }
+
+  /*  public static void main(String[] args) {
         long start = System.currentTimeMillis();
         ArrayDeque<Integer> aList = new ArrayDeque<>();
 
@@ -243,10 +260,10 @@ public class ArrayDeque<T> {
         aList.addLast(12);
         aList.addLast(12);
         aList.printDeque();
-        System.out.println(aList.get(2));
+        *//*System.out.println(aList.get(2));
         System.out.println(aList.get(23));
-        System.out.println(aList.get(31));
-        /*aList.printDeque();
+        System.out.println(aList.get(31));*//*
+        *//*aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
@@ -279,13 +296,17 @@ public class ArrayDeque<T> {
         aList.printDeque();
         ArrayDeque<Integer> aList2 = new ArrayDeque<>();
         System.out.println(aList2.isEmpty());
-*/
+*//*
 //        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
 //        //System.out.println(aList.items.length);
 //        System.out.println(aList.size());
+
+        for (Integer i : aList) {
+            System.out.println(i);
+        }
         long end = System.currentTimeMillis();
         System.out.println("\n Time taken: " + (end - start) + " ms");
 
 
-    }
+    }*/
 }
