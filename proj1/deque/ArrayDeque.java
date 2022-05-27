@@ -29,11 +29,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public void addFirst(T item) {
-        // TODO resizing
         if (size == sentinel.length) {
             double initialTemp = sentinel.length * R_FACTOR;
             T[] temp = (T[]) new Object[(int) initialTemp];
-            int mid = ((end - start) / 2);
+            int mid = ((temp.length - end) / 2);
             System.arraycopy(sentinel, start, temp, mid, size);
             sentinel = temp;
             head = mid - 1;
@@ -54,7 +53,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public void addLast(T item) {
-        // TODO resizing
         if (size == sentinel.length) {
             double initialTemp = sentinel.length * R_FACTOR;
             T[] temp = (T[]) new Object[(int) initialTemp];
@@ -195,8 +193,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-  /*  public static void main(String[] args) {
-        long start = System.currentTimeMillis();
+    public static void main(String[] args) {
+        /*long start = System.currentTimeMillis();
         ArrayDeque<Integer> aList = new ArrayDeque<>();
 
         aList.addLast(10);
@@ -263,7 +261,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         *//*System.out.println(aList.get(2));
         System.out.println(aList.get(23));
         System.out.println(aList.get(31));*//*
-        *//*aList.printDeque();
+         *//*aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
@@ -309,4 +307,5 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
     }*/
+    }
 }
