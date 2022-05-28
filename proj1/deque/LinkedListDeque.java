@@ -307,7 +307,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return new LinkedListIterator();
     }
 
-    public class LinkedListIterator implements Iterator<T> {
+    private class LinkedListIterator implements Iterator<T> {
         // An iterator must have the following 2 functions
         int temp = 0;
         Node tempLL = head;

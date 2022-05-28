@@ -20,7 +20,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         sentinel = (T[]) new Object[INTITIAL_LENGTH];
     }
 
-    public ArrayDeque(T item) {
+    private ArrayDeque(T item) {
         sentinel = (T[]) new Object[INTITIAL_LENGTH];
         sentinel[head] = item;
         head--;
