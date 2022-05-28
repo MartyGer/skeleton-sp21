@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Comparator;
-
 public class MaxArrayDeque<T> extends ArrayDeque<T> {
 
 
@@ -16,14 +15,14 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
     }
 
     public T max(Comparator<T> c) {
-        if (size == 0) {
+        if (size() == 0) {
             return null;
         }
 
-        T store = sentinel[0];
-        for (int i = 1; i < size; i++) {
-            if (c.compare(store, sentinel[i]) > 0) {
-                store = sentinel[i];
+        T store = get(0);
+        for (int i = 1; i < size(); i++) {
+            if (c.compare(store, get(i)) > 0) {
+                store = get(i);
             }
         }
 

@@ -2,8 +2,6 @@ package gh2;
 
 
 import deque.Deque;
-import edu.princeton.cs.introcs.StdAudio;
-
 import java.text.DecimalFormat;
 
 
@@ -71,11 +69,6 @@ public class GuitarString {
         return buffer.get(0);
     }
 
-    public static void main(String[] args) {
-        GuitarString aString = new GuitarString(GuitarHeroLite.CONCERT_A);
-        aString.pluck();
-        System.out.println("name");
-    }
 }
 
 

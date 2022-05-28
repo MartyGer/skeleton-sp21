@@ -3,8 +3,8 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    public T[] sentinel;
-    public int size;
+    private T[] sentinel;
+    private int size;
     private int head = 3;
     private int tail = head + 1;
 
@@ -179,7 +179,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return new ArrayIterator();
     }
 
-    public class ArrayIterator implements Iterator<T> {
+    private class ArrayIterator implements Iterator<T> {
         int wizPos = 0;
 
         public boolean hasNext() {
@@ -193,8 +193,28 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    public static void main(String[] args) {
-        /*long start = System.currentTimeMillis();
+    public boolean equals(Object o) {
+        if (!(o instanceof ArrayDeque)) {
+            return false;
+        }
+
+        ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
+        if (tempArray.size() != this.size) {
+            return false;
+        }
+
+        for (int i = 0; i < this.size; i++) {
+            if (tempArray.get(i) != this.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    /* public static void main(String[] args) {
+     *//*long start = System.currentTimeMillis();
         ArrayDeque<Integer> aList = new ArrayDeque<>();
 
         aList.addLast(10);
@@ -258,10 +278,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         aList.addLast(12);
         aList.addLast(12);
         aList.printDeque();
-        *//*System.out.println(aList.get(2));
+        *//**//*System.out.println(aList.get(2));
         System.out.println(aList.get(23));
-        System.out.println(aList.get(31));*//*
-         *//*aList.printDeque();
+        System.out.println(aList.get(31));*//**//*
+     *//**//*aList.printDeque();
         aList.removeFirst();
         aList.removeLast();
         aList.removeFirst();
@@ -294,7 +314,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         aList.printDeque();
         ArrayDeque<Integer> aList2 = new ArrayDeque<>();
         System.out.println(aList2.isEmpty());
-*//*
+*//**//*
 //        //System.out.println("\nRFACTOR: " + aList.rFactorCalc());
 //        //System.out.println(aList.items.length);
 //        System.out.println(aList.size());
@@ -306,6 +326,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         System.out.println("\n Time taken: " + (end - start) + " ms");
 
 
+    }*//*
     }*/
-    }
 }

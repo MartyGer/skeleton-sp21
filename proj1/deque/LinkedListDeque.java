@@ -146,12 +146,12 @@ import java.util.Iterator;
 
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
-    public class Node {
+    private class Node {
         private Node prev;
         private T first;
         private Node next;
 
-        public Node(Node prev, T first, Node next) {
+        private Node(Node prev, T first, Node next) {
             this.prev = prev;
             this.first = first;
             this.next = next;
@@ -167,7 +167,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         size = 0;
     }
 
-    public LinkedListDeque(T item) {
+    private LinkedListDeque(T item) {
         head = new Node(null, item, null);
         head.next = head;
         head.prev = head;
@@ -283,7 +283,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return getRec(pointer, index);
     }
 
-    public T getRec(Node pointer, int index) {
+    private T getRec(Node pointer, int index) {
         if (index == 0) {
             return pointer.first;
         }
@@ -350,7 +350,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return true;
     }
 
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         LinkedListDeque<Integer> list = new LinkedListDeque<>();
         System.out.println(list.isEmpty());
         list.addLast(20);
