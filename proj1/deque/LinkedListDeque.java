@@ -329,9 +329,14 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (o == null) {
             return false;
         }
-        /*if (!(o instanceof LinkedListDeque)) {
-            return false;
-        }*/
+        if (!(o instanceof ArrayDeque)) {
+            ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
+            for (int i = 0; i < this.size; i++) {
+                if (tempArray.get(i) != this.get(i)) {
+                    return false;
+                }
+            }
+        }
         LinkedListDeque<T> object = (LinkedListDeque<T>) o;
         if (object.getClass() != this.getClass()) {
             return false;
