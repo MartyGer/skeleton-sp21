@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.Iterator;
+import deque.LinkedListDeque;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] sentinel;
@@ -189,12 +190,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return false;
         }
 
-        if (o instanceof LinkedListDeque) {
+        if (!(o instanceof ArrayDeque)) {
             LinkedListDeque<T> tempArray = (LinkedListDeque<T>) o;
+            if (tempArray.size() != size()) {
+                return false;
+            }
             for (int i = 0; i < this.size; i++) {
-                if (tempArray.size() != size()) {
-                    return false;
-                }
                 if (tempArray.get(i) != this.get(i)) {
                     return false;
                 }
@@ -203,13 +204,32 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
-        if (tempArray.size() != this.size) {
+        if (tempArray.size() != size()) {
             return false;
         }
-
+        for (int i = 0; i < this.size; i++) {
+            if (tempArray.get(i) != this.get(i)) {
+                return false;
+            }
+        }
 
         return true;
 
+    }
+
+    private static void main(String[] args) {
+        ArrayDeque<Integer> aList = new ArrayDeque<>();
+        aList.addFirst(2);
+        aList.addFirst(3);
+        aList.addFirst(4);
+        aList.addFirst(5);
+        LinkedListDeque<Integer> List = new LinkedListDeque<>();
+        List.addFirst(2);
+        List.addFirst(3);
+        List.addFirst(4);
+        List.addFirst(5);
+
+        System.out.println(aList.equals(List));
     }
   /*  public static void main(String[] args)
     {
