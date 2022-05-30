@@ -329,18 +329,20 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (o == null) {
             return false;
         }
+
         if (!(o instanceof LinkedListDeque)) {
-            ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
+            /*ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
             if (tempArray.size() != size()) {
                 return false;
             }
+
             for (int i = 0; i < this.size; i++) {
 
                 if (tempArray.get(i) != this.get(i)) {
                     return false;
                 }
-            }
-            return true;
+            }*/
+            return false;
         }
         LinkedListDeque<T> object = (LinkedListDeque<T>) o;
         /*if (object.getClass() != this.getClass()) {
@@ -361,7 +363,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     private static void main(String[] args) {
-        ArrayDeque<Integer> aList = new ArrayDeque<>();
+        /*ArrayDeque<Integer> aList = new ArrayDeque<>();
         aList.addFirst(2);
         aList.addFirst(3);
         aList.addFirst(4);
@@ -372,7 +374,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         List.addFirst(4);
         List.addFirst(5);
 
-        System.out.println(aList.equals(List));
+        System.out.println(aList.equals(List));*/
         /*LinkedListDeque<Integer> list = new LinkedListDeque<>();
         System.out.println(list.isEmpty());
         list.addLast(20);

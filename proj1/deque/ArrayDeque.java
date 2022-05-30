@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Iterator;
-import deque.LinkedListDeque;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] sentinel;
@@ -191,7 +190,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         if (!(o instanceof ArrayDeque)) {
-            LinkedListDeque<T> tempArray = (LinkedListDeque<T>) o;
+            /*LinkedListDeque<T> tempArray = (LinkedListDeque<T>) o;
             if (tempArray.size() != size()) {
                 return false;
             }
@@ -199,8 +198,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 if (tempArray.get(i) != this.get(i)) {
                     return false;
                 }
-            }
-            return true;
+            }*/
+            return false;
         }
 
         ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
@@ -217,7 +216,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     }
 
-    private static void main(String[] args) {
+    /*private static void main(String[] args) {
         ArrayDeque<Integer> aList = new ArrayDeque<>();
         aList.addFirst(2);
         aList.addFirst(3);
@@ -230,7 +229,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         List.addFirst(5);
 
         System.out.println(aList.equals(List));
-    }
+    }*/
   /*  public static void main(String[] args)
     {
         ArrayDeque<Integer> aList = new ArrayDeque<>();
