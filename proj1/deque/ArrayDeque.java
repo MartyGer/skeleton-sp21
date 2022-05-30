@@ -185,7 +185,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof ArrayDeque)) {
+        if (o == null) {
+            return false;
+        }
+
+        if (o instanceof LinkedListDeque) {
             LinkedListDeque<T> tempArray = (LinkedListDeque<T>) o;
             for (int i = 0; i < this.size; i++) {
                 if (tempArray.size() != size()) {
@@ -202,7 +206,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (tempArray.size() != this.size) {
             return false;
         }
-
 
 
         return true;

@@ -329,7 +329,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (o == null) {
             return false;
         }
-        if (!(o instanceof ArrayDeque)) {
+        if ((o instanceof ArrayDeque)) {
 
             ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
             for (int i = 0; i < this.size; i++) {
