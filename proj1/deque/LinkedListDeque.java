@@ -330,6 +330,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return false;
         }
 
+        if (o == this) {
+            return true;
+        }
+
         if (!(o instanceof LinkedListDeque)) {
             /*ArrayDeque<T> tempArray = (ArrayDeque<T>) o;
             if (tempArray.size() != size()) {
