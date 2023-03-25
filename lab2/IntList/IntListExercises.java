@@ -14,9 +14,6 @@ public class IntListExercises {
             head.first += c;
             head = head.rest;
         }
-        // The above loop misses one case which is when the head.rest == null!
-        // The following solves the issue.
-        head.first += c;
     }
 
     /**
@@ -54,7 +51,7 @@ public class IntListExercises {
      */
     public static boolean firstDigitEqualsLastDigit(int x) {
         int lastDigit = x % 10;
-        while (x >= 10) {
+        while (x > 10) {
             x = x / 10;
         }
         int firstDigit = x % 10;
@@ -71,7 +68,7 @@ public class IntListExercises {
     public static boolean squarePrimes(IntList lst) {
         // Base Case: we have reached the end of the list
         if (lst == null) {
-            return true;
+            return false;
         }
 
         boolean currElemIsPrime = Primes.isPrime(lst.first);
@@ -80,6 +77,6 @@ public class IntListExercises {
             lst.first *= lst.first;
         }
 
-        return squarePrimes(lst.rest);
+        return currElemIsPrime || squarePrimes(lst.rest);
     }
 }
